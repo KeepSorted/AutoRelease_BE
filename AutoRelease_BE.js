@@ -36,7 +36,3 @@ const rumCommand = (cmd, args, callback) => {
     child.stdout.on('data', buffer => response += buffer.toString())
     child.stdout.on('end', () => callback(response))
 }
-
-rumCommand('sh', ['./auto_build.sh'], txt => {
-    console.log(txt)
-  })
