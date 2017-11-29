@@ -14,9 +14,11 @@ handler.on('error', function (err) {
 })
  
 handler.on('push', function (event) {
-  console.log('Received a push event for %s to %s',
-    event.payload.repository.name,
-    event.payload.ref)
+  console.log('Received a push event for %s to %s',event.payload.repository.name,event.payload.ref);
+  rumCommand('sh', ['./auto_build.sh'], txt => {
+    console.log(txt)
+  })
+
 })
  
 handler.on('issues', function (event) {
@@ -26,3 +28,10 @@ handler.on('issues', function (event) {
     event.payload.issue.number,
     event.payload.issue.title)
 })
+
+const rumCommand = (cmd, args, callback) => {
+    const child = spawn(cmd, args)
+    let response = ''
+    child.stdout.on('data', buffer => response += buffer.toString())
+    child.stdout.on('end', () => callback(response))
+}
