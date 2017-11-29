@@ -1,6 +1,7 @@
 var http = require('http')
 var createHandler = require('github-webhook-handler')
 var handler = createHandler({ path: '/webhook', secret: 'myhashsecret' })
+const spawn = require('child_process').spawn;
  
 http.createServer(function (req, res) {
   handler(req, res, function (err) {
@@ -35,3 +36,7 @@ const rumCommand = (cmd, args, callback) => {
     child.stdout.on('data', buffer => response += buffer.toString())
     child.stdout.on('end', () => callback(response))
 }
+
+rumCommand('sh', ['./auto_build.sh'], txt => {
+    console.log(txt)
+  })
